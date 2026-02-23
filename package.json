@@ -1,0 +1,27 @@
+{
+  "name": "430-project-1",
+  "version": "1.0.0",
+  "description": "Api that grabs information on books",
+  "homepage": "https://github.com/dsw039/430-Project-1#readme",
+  "bugs": {
+    "url": "https://github.com/dsw039/430-Project-1/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dsw039/430-Project-1.git"
+  },
+  "license": "ISC",
+  "author": "Daniel Wright",
+  "type": "commonjs",
+  "main": "eslint.config.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Tests complete\""
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.1",
+    "globals": "^17.3.0"
+  }
+}

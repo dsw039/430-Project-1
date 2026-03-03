@@ -65,7 +65,7 @@ const parseBody = (request, response, handler) => {
 
 // handle POST requests
 const handlePost = (request, response, parsedUrl) => {
-  // If they go to /addUser
+  // If they go to /addBook
   if (parsedUrl.pathname === '/addBook') {
     // Call our below parseBody handler, and in turn pass in the
     // jsonHandler.addUser function as the handler callback function.
@@ -81,8 +81,14 @@ const handleGet = (request, response, parsedUrl) => {
   } else if (parsedUrl.pathname === '/getBooks') {
     jsonHandler.getBooks(request, response);
   } else if (parsedUrl.pathname === '/getBook') {
-    jsonHandler.getBook(request, response);
-  } else {
+    jsonHandler.getBook(request, response, parsedUrl);
+  } else if (parsedUrl.pathname === '/getGenre') {
+    jsonHandler.getGenre(request,response,parsedUrl);
+  } else if (parsedUrl.pathname === '/getLanguage') {
+    jsonHandler.getLanguage(request,response,parsedUrl);
+  }else if (parsedUrl.pathname === '/getDoc'){
+    htmlHandler.getDoc(request,response);
+  }else {
     htmlHandler.getIndex(request, response);
   }
 };

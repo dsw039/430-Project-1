@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+</head>
+<body>
+    <h1>Book API Documentation</h1>
+    <h2>Add Book(Post)</h2>
+    <h3>Supported Formats</h3>
+    <p>application/json</p>
+    <p>application/x-www-form-urlencoded</p>
+    <h3>Body Params</h3>
+    <p>"title" Type: "string" - Name of the Book</p>
+    <p>"author" Type: "string" - Name of the Author</p>
+    <h3>Returns</h3>
+    <p>A status code indicating a successful or unsuccessful addition</p>
+    <h3>Examples</h3>
+    <p>Request: api/addBook</p>
+    <p>Body: {title,author}</p>
+    <p>Result: {"message":"Created Successfully"}</p>
+    <p>Request: api/addBook</p>
+    <p>Body: {title}</p>
+    <p>Result: {"message":"author and title are both required.","id":"missingParams"}</p>
+    <h2>Get Books(GET)</h2>
+    <h3>Query Params</h3>
+    <p>N/A</p>
+    <h3>Returns</h3>
+    <p>A JSON array of Book Objects</p>
+    <h3>Examples</h3>
+    <p>Request: api/getBooks</p>
+    <p>Result: {"books":[{"author":"a1","country":"c1","language":"l1","link":"ll1","pages":1,"title":"t1","year":1,"genres":["g1"]},{"author":"a2","country":"c2","language":"l2","link":"ll2","pages":1,"title":"t2","year":1,"genres":["g2"]},{"author":"a3","country":"c3","language":"l3","link":"ll3","pages":1,"title":"t3","year":1,"genres":["g3"]},...}</p>
+    <h2>Get Book(GET)</h2>
+    <h3>Query Params</h3>
+    <p>"title" Type: "string" - Name of the Book</p>
+    <h3>Returns</h3>
+    <p>A JSON array of Book Objects with the same title(usually an array of just 1 book)</p>
+    <h3>Examples</h3>
+    <p>Request: api/getBook?filteredBooks=Things-Fall-Apart</p>
+    <p>Results: [{"author":"Chinua Achebe","country":"Nigeria","language":"English","link":"https://en.wikipedia.org/wiki/Things_Fall_Apart\n","pages":209,"title":"Things Fall Apart","year":1958,"genres":["Historical Fiction","Postcolonial Literature"]}]</p>
+    <p>Request: api/getBook?filteredBooks=FakeBook</p>
+    <p>Results: {"message":"Book Not Found"}</p>
+    <h2>Get Genre(GET)</h2>
+    <h3>Query Params</h3>
+    <p>"genre" Type: "string" - Genre of the Book</p>
+    <h3>Returns</h3>
+    <p>A JSON array of Book Objects with, 1, a listed genre and 2, a genre matching the requested genre</p>
+    <h3>Examples</h3>
+    <p>Request: api/getGenre?filteredBooks=Modernism</p>
+    <p>Results: {"books":[{"author":"a1","country":"c1","language":"l1","link":"ll1","pages":1,"title":"t1","year":1,"genres":["Modernism"]},{"author":"a2","country":"c2","language":"l2","link":"ll2","pages":1,"title":"t2","year":1,"genres":["Modernism"]},{"author":"a3","country":"c3","language":"l3","link":"ll3","pages":1,"title":"t3","year":1,"genres":["Modernism"]},...}</p>
+    <p>Request: api/getGenre?filteredBooks=modernism</p>
+    <p>Results: {"message":"Genre Not Found"}</p>
+    <h2>Get Language(GET)</h2>
+    <h3>Query Params</h3>
+    <p>"language" Type: "string" - Language of the Book</p>
+    <h3>Returns</h3>
+    <p>A JSON array of Book Objects with the same listed language</p>
+    <h3>Examples</h3>
+    <p>Request: api/getGenre?filteredBooks=Japanese</p>
+    <p>Results: [{"author":"Yasunari Kawabata","country":"Japan","language":"Japanese","link":"https://en.wikipedia.org/wiki/The_Sound_of_the_Mountain\n","pages":288,"title":"The Sound of the Mountain","year":1954},{"author":"Murasaki Shikibu","country":"Japan","language":"Japanese","link":"https://en.wikipedia.org/wiki/The_Tale_of_Genji\n","pages":1360,"title":"The Tale of Genji","year":1006}]</p>
+    <p>Request: api/getGenre?filteredBooks=Martian</p>
+    <p>Results: {"message":"Language Not Found"}</p>
+
+</body>
+</html>

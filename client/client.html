@@ -11,19 +11,23 @@
         const handleResponse = async (response) => {
 
             const content = document.querySelector('#content');
+            const results = document.getElementById("results");
 
             switch (response.status) {
                 case 200: //success
-                    content.innerHTML = `<b>Success</b>`;
+                    content.innerHTML = `<b>Success(200)</b>`;
                     break;
                 case 201: //created
-                    content.innerHTML = '<b>Created</b>';
+                    content.innerHTML = '<b>Created(201)</b>';
                     break;
                 case 204: //updated (no response back from server)
-                    content.innerHTML = '<b>Updated (No Content)</b>';
+                    content.innerHTML = '<b>Updated (No Content)(204)</b>';
                     return;
                 case 400: //bad request
-                    content.innerHTML = `<b>Bad Request</b>`;
+                    content.innerHTML = `<b>Bad Request(400)</b>`;
+                    break;
+                case 404: //Not Found
+                    content.innerHTML = `<b>Not Found(404)</b>`;
                     break;
                 default: //any other status code
                     content.innerHTML = `Error code not implemented by client.`;
@@ -34,7 +38,11 @@
 
             if (obj.message) {
                 content.innerHTML += `<p>${obj.message}</p>`;
-            }
+            } 
+
+            //Prints out the json below on the same page after clearing out any previous json
+            results.innerHTML = `<p></p>`;
+            results.innerHTML += `<p>${JSON.stringify(obj)}</p>`;
         };
 
         const sendPost = async (nameForm) => {
@@ -47,7 +55,7 @@
             const dataType = nameForm.querySelector('#dataType').value;
 
             //Build a data string in the FORM-URLENCODED format.
-            let formData = `title=${title}&age=${author}`;
+            let formData = `title=${title}&author=${author}`;
 
             //If the user selected JSON, send that instead
             if (dataType === 'application/json') {
@@ -67,6 +75,60 @@
             handleResponse(response);
         };
 
+        const getGenre = async (genreForm) => {
+            const url = genreForm.getAttribute('action');
+            const method = genreForm.getAttribute('method');
+
+            const genre = genreForm.querySelector('#genreField').value;
+
+           const fullURL = `${url}?genre=${encodeURIComponent(genre)}`;
+
+            const response = await fetch(fullURL, {
+                method: method,
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+
+            handleResponse(response);
+        };
+
+        const getBook = async (titleForm) => {
+            const url = titleForm.getAttribute('action');
+            const method = titleForm.getAttribute('method');
+
+            const title = titleForm.querySelector('#titleField').value;
+
+            const fullURL = `${url}?title=${encodeURIComponent(title)}`;
+
+            const response = await fetch(fullURL, {
+                method: method,
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+
+            handleResponse(response);
+        };
+
+        const getLanguage = async (languageForm) => {
+            const url = languageForm.getAttribute('action');
+            const method = languageForm.getAttribute('method');
+
+            const language = languageForm.querySelector('#languageField').value;
+
+            const fullURL = `${url}?language=${encodeURIComponent(language)}`;
+
+            const response = await fetch(fullURL, {
+                method: method,
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+
+            handleResponse(response);
+        };
+
         const init = () => {
             //Grab the form
             const nameForm = document.querySelector('#nameForm');
@@ -79,6 +141,26 @@
                 return false;
             }
 
+           // titleForm.addEventListener('submit', getBook);
+
+            titleForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                getBook(titleForm);
+            });
+
+
+            genreForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                getGenre(genreForm);
+            });
+
+            //languageForm.addEventListener('submit',getLanguage);
+
+            languageForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                getLanguage(languageForm);
+            });
+
             nameForm.addEventListener('submit', addBook);
         };
 
@@ -87,24 +169,54 @@
 </head>
 
 <body>
-<section id="top">
-    <h3>Book-Project-Milestone</h3>
-    <form id="nameForm" action="/addBook" method="post">
-      <label for="title">title: </label>
-      <input id="nameField" type="text" name="title" />
-      <label for="author">Author: </label>
-      <input id="authorField" type="text" name="author" min="0" max="100" step="1"/>
-      <select name="dataType" id="dataType">
-        <option value="application/x-www-form-urlencoded">URL Encoded</option>
-        <option value="application/json">JSON</option>
-      </select>
-      <input type="submit" value="Add Book" />
-    </form>
-    <p>Go to <a href="/getBooks">/getBooks</a> to see books.</p>
-    <p>Go to <a href="/getBook">/getBook</a> to see books with a  title filter</a></p>
-  </section>
-  <section id="content">
-  </section>
+    <section id="top">
+        <h3>Book-Project</h3>
+        <form id="nameForm" action="/addBook" method="post">
+            <label for="title">Title: </label>
+            <input id="titleField" type="text" name="title" />
+            <label for="author">Author: </label>
+            <input id="authorField" type="text" name="author" min="0" max="100" step="1" />
+            <select name="dataType" id="dataType">
+                <option value="application/json">JSON</option>
+                <option value="application/x-www-form-urlencoded">URL Encoded</option>
+            </select>
+            <input type="submit" value="Add Book" />
+        </form>
+        <form id="titleForm" action="/getBook" method="get">
+            <label for="title">Title: </label>
+            <input id="titleField" type="text" name="title" />
+            <select name="dataType" id="dataType">
+                <option value="application/json">JSON</option>
+                <option value="application/x-www-form-urlencoded">URL Encoded</option>
+            </select>
+            <input type="submit" value="Get Book" />
+        </form>
+        <form id="genreForm" action="/getGenre" method="get">
+            <label for="Genre">Genre: </label>
+            <input id="genreField" type="text" name="genre" />
+            <select name="dataType" id="dataType">
+                <option value="application/json">JSON</option>
+                <option value="application/x-www-form-urlencoded">URL Encoded</option>
+            </select>
+            <input type="submit" value="Get Genre" />
+        </form>
+        <form id="languageForm" action="/getLanguage" method="get">
+            <label for="Language">Language: </label>
+            <input id="languageField" type="text" name="language" />
+            <select name="dataType" id="dataType">
+                <option value="application/json">JSON</option>
+                <option value="application/x-www-form-urlencoded">URL Encoded</option>
+            </select>
+            <input type="submit" value="Get Language" />
+        </form>
+        <p>Go to <a href="/getBooks">/getBooks</a> to see books.</p>
+        <p>Go to <a href="/getDoc">documentaion</a> to see my documentation</p>
+        
+    </section>
+    <section id="content">
+    </section>
+    <section id="results">
+    </section>
 </body>
 
 </html>
